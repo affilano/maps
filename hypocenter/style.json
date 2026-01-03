@@ -1,0 +1,123 @@
+{
+    "version": 8,
+    "sources": {
+        "hypo": {
+            "type": "vector",
+            "url": "pmtiles://hypo.pmtiles"
+        }
+    },
+    "layers": [
+        {
+            "id": "prefecture-below",
+            "type": "fill",
+            "source": "hypo",
+            "source-layer": "prefecture",
+            "layout": {},
+            "paint": {
+                "fill-color": "hsl(0, 0%, 50%)",
+                "fill-opacity": 0.2
+            }
+        },
+        {
+            "id": "hypocenter",
+            "type": "fill-extrusion",
+            "source": "hypo",
+            "source-layer": "hypocenter",
+            "filter": ["has", "max_mag"],
+            "layout": {},
+            "paint": {
+                "fill-extrusion-color": [
+                    "interpolate",
+                    ["linear"],
+                    ["get", "depth"],
+                    0,
+                    [
+                        "interpolate",
+                        ["linear"],
+                        ["get", "max_mag"],
+                        0,
+                        "hsl(0, 90%, 80%)",
+                        6,
+                        "hsl(0, 90%, 40%)"
+                    ],
+                    120,
+                    [
+                        "interpolate",
+                        ["linear"],
+                        ["get", "max_mag"],
+                        0,
+                        "hsl(60, 90%, 80%)",
+                        6,
+                        "hsl(60, 90%, 40%)"
+                    ],
+                    240,
+                    [
+                        "interpolate",
+                        ["linear"],
+                        ["get", "max_mag"],
+                        0,
+                        "hsl(120, 90%, 80%)",
+                        6,
+                        "hsl(120, 90%, 40%)"
+                    ],
+                    360,
+                    [
+                        "interpolate",
+                        ["linear"],
+                        ["get", "max_mag"],
+                        0,
+                        "hsl(180, 90%, 80%)",
+                        6,
+                        "hsl(180, 90%, 40%)"
+                    ],
+                    480,
+                    [
+                        "interpolate",
+                        ["linear"],
+                        ["get", "max_mag"],
+                        0,
+                        "hsl(240, 90%, 80%)",
+                        6,
+                        "hsl(240, 90%, 40%)"
+                    ],
+                    600,
+                    [
+                        "interpolate",
+                        ["linear"],
+                        ["get", "max_mag"],
+                        0,
+                        "hsl(300, 90%, 80%)",
+                        6,
+                        "hsl(300, 90%, 40%)"
+                    ]
+                ],
+                "fill-extrusion-height": [
+                    "+",
+                    ["*", ["-", 530, ["get", "depth"]], 1000],
+                    10000
+                ],
+                "fill-extrusion-base": [
+                    "*",
+                    ["-", 530, ["get", "depth"]],
+                    1000
+                ],
+                "fill-extrusion-vertical-gradient": false,
+                "fill-extrusion-opacity": 0.8
+            }
+        },
+        {
+            "id": "prefecture-above",
+            "type": "fill-extrusion",
+            "source": "hypo",
+            "source-layer": "prefecture",
+            "layout": {},
+            "paint": {
+                "fill-extrusion-color": "hsl(180, 40%, 80%)",
+                "fill-extrusion-height": 542000,
+                "fill-extrusion-base": 542000,
+                "fill-extrusion-vertical-gradient": false,
+                "fill-extrusion-opacity": 0.6
+            }
+        }
+    ]
+}

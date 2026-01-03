@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <title>3D震源マップ</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="https://unpkg.com/maplibre-gl/dist/maplibre-gl.css" />
+    <script src="https://unpkg.com/maplibre-gl/dist/maplibre-gl.js"></script>
+    <script src="https://unpkg.com/pmtiles/dist/pmtiles.js"></script>
+    <style>
+        body { margin: 0; padding: 0; }
+        #map { position: absolute; top: 0; bottom: 0; width: 100%; background-color: #29293d; }
+    </style>
+</head>
+<body>
+<style>
+    .map-overlay {
+        font: 14px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+        line-height: 1;
+        position: absolute;
+        width: 400px;
+        max-width: 95%;
+        top: 0;
+        left: 0;
+        padding: 10px;
+    }
+
+    .map-overlay .map-overlay-inner {
+        background-color: #fff;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+        border-radius: 10px;
+        padding: 12px;
+        margin-bottom: 10px;
+    }
+
+    .map-overlay h2 {
+        line-height: 32px;
+        display: block;
+        margin: 0 0 10px;
+    }
+
+    .map-overlay input {
+        background-color: transparent;
+        display: inline-block;
+        width: 100%;
+        position: relative;
+        cursor: ew-resize;
+        margin: -10px 0 0;
+    }
+
+    .map-overlay datalist {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        writing-mode: horizontal-tb;
+        width: 100%;
+    }
+
+    .map-overlay .legend {
+        height: 20px;
+        width: 100%;
+        border-radius: 10px;
+        background: linear-gradient(90deg, hsl(0, 60%, 60%) 4%, hsl(60, 60%, 60%) 27%, hsl(120, 60%, 60%) 50%, hsl(180, 60%, 60%) 73%, hsl(240, 60%, 60%) 96%);
+        margin: 0 0 10px;
+    }
+</style>
+
+<div id="map"></div>
+
+<div class="map-overlay top">
+    <div class="map-overlay-inner">
+        <h2>3Dメッシュで見る震源分布マップ</h2>
+        <p>期間：2023年1月1日～2023年12月31日</p>
+        <p>深さ：<label id="depth">0</label>km 以上</p>
+        <input id="slider" type="range" style="scale:-1" min="0" max="500" step="10" value="500" list="list">
+        <datalist id="list">
+            <option value="0" label="&numsp;0&numsp;"  >
+            <option value="100" label="100">
+            <option value="200" label="200">
+            <option value="300" label="300">
+            <option value="400" label="400">
+            <option value="500" label="500">
+        </datalist>
+        <div class="legend">
+    </div>
+</div>
+
+<script>
+    const protocol = new pmtiles.Protocol();
+    maplibregl.addProtocol("pmtiles", protocol.tile);
+
+    const map =  new maplibregl.Map({
+        container: "map",
+        center: [135, 35],
+        zoom: 4,
+        maxZoom: 8,
+        maxPitch: 85,
+        hash: true,
+        style: 'style.json',
+    });
+
+    function filterBy(depth) {
+        const d = 500 + (-depth);
+        const filters = [
+            'all', 
+            ['has', 'max_mag'],
+            ['>=',  ['get', 'depth'], d]
+        ];
+        map.setFilter('hypocenter', filters);
+        document.getElementById('depth').textContent = d;
+    }
+
+    map.on('load', function () {
+        document
+            .getElementById('slider')
+            .addEventListener('input', function (e) {
+                depth = e.target.value;
+                filterBy(depth);
+            });
+    });
+
+    map.on('style.load', () => {
+        map.setProjection({
+            type: 'globe',
+        });
+    });
+</script>
+</body>
+</html>

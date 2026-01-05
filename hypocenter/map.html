@@ -59,7 +59,7 @@
         height: 20px;
         width: 100%;
         border-radius: 10px;
-        background: linear-gradient(90deg, hsl(0, 60%, 60%) 4%, hsl(60, 60%, 60%) 26.08%, hsl(120, 60%, 60%) 48.16%, hsl(180, 60%, 60%) 70.24%, hsl(240, 60%, 60%) 92.32%, hsl(250, 60%, 60%) 96%);
+        background: linear-gradient(90deg, hsl(0, 70%, 60%) 4%, hsl(60, 70%, 60%) 26.08%, hsl(120, 70%, 60%) 48.16%, hsl(180, 70%, 60%) 70.24%, hsl(240, 70%, 60%) 92.32%, hsl(250, 70%, 60%) 96%);
         margin: 0 0 10px;
     }
 </style>
@@ -102,8 +102,8 @@
         const d = 500 + (-depth);
         const filters = [
             'all', 
-            ['has', 'max_mag'],
-            ['>=',  ['get', 'depth'], d]
+            ['>=', ['get', 'depth'], d],
+            ['<=', ['get', 'depth'], 500]
         ];
         map.setFilter('hypocenter', filters);
         document.getElementById('depth').textContent = d;

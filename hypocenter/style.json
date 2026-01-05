@@ -19,11 +19,47 @@
             }
         },
         {
+            "id": "hypocenter-over500",
+            "type": "fill",
+            "source": "hypo",
+            "source-layer": "hypocenter",
+            "filter": [">", ["get", "depth"], 500],
+            "layout": {},
+            "paint": {
+                "fill-color": [
+                    "interpolate",
+                    ["linear"],
+                    ["get", "depth"],
+                    480,
+                    [
+                        "interpolate",
+                        ["exponential", 0.9],
+                        ["get", "count"],
+                        0,
+                        "hsl(240, 90%, 70%)",
+                        1000,
+                        "hsl(240, 70%, 40%)"
+                    ],
+                    600,
+                    [
+                        "interpolate",
+                        ["exponential", 0.9],
+                        ["get", "count"],
+                        0,
+                        "hsl(300, 90%, 70%)",
+                        1000,
+                        "hsl(300, 70%, 40%)"
+                    ]
+                ],
+                "fill-opacity": 0.8
+            }
+        },
+        {
             "id": "hypocenter",
             "type": "fill-extrusion",
             "source": "hypo",
             "source-layer": "hypocenter",
-            "filter": ["has", "max_mag"],
+            "filter": ["<=", ["get", "depth"], 500],
             "layout": {},
             "paint": {
                 "fill-extrusion-color": [
@@ -33,72 +69,72 @@
                     0,
                     [
                         "interpolate",
-                        ["linear"],
-                        ["get", "max_mag"],
+                        ["exponential", 0.9],
+                        ["get", "count"],
                         0,
-                        "hsl(0, 90%, 80%)",
-                        6,
-                        "hsl(0, 90%, 40%)"
+                        "hsl(0, 90%, 70%)",
+                        1000,
+                        "hsl(0, 70%, 40%)"
                     ],
                     120,
                     [
                         "interpolate",
-                        ["linear"],
-                        ["get", "max_mag"],
+                        ["exponential", 0.9],
+                        ["get", "count"],
                         0,
-                        "hsl(60, 90%, 80%)",
-                        6,
-                        "hsl(60, 90%, 40%)"
+                        "hsl(60, 90%, 70%)",
+                        1000,
+                        "hsl(60, 70%, 40%)"
                     ],
                     240,
                     [
                         "interpolate",
-                        ["linear"],
-                        ["get", "max_mag"],
+                        ["exponential", 0.9],
+                        ["get", "count"],
                         0,
-                        "hsl(120, 90%, 80%)",
-                        6,
-                        "hsl(120, 90%, 40%)"
+                        "hsl(120, 90%, 70%)",
+                        1000,
+                        "hsl(120, 70%, 40%)"
                     ],
                     360,
                     [
                         "interpolate",
-                        ["linear"],
-                        ["get", "max_mag"],
+                        ["exponential", 0.9],
+                        ["get", "count"],
                         0,
-                        "hsl(180, 90%, 80%)",
-                        6,
-                        "hsl(180, 90%, 40%)"
+                        "hsl(180, 90%, 70%)",
+                        1000,
+                        "hsl(180, 70%, 40%)"
                     ],
                     480,
                     [
                         "interpolate",
-                        ["linear"],
-                        ["get", "max_mag"],
+                        ["exponential", 0.9],
+                        ["get", "count"],
                         0,
-                        "hsl(240, 90%, 80%)",
-                        6,
-                        "hsl(240, 90%, 40%)"
+                        "hsl(240, 90%, 70%)",
+                        1000,
+                        "hsl(240, 70%, 40%)"
                     ],
                     600,
                     [
                         "interpolate",
-                        ["linear"],
-                        ["get", "max_mag"],
+                        ["exponential", 0.9],
+                        ["get", "count"],
                         0,
-                        "hsl(300, 90%, 80%)",
-                        6,
-                        "hsl(300, 90%, 40%)"
+                        "hsl(300, 90%, 70%)",
+                        1000,
+                        "hsl(300, 70%, 40%)"
                     ]
                 ],
                 "fill-extrusion-height": [
                     "+",
-                    ["*", ["-", 530, ["get", "depth"]], 1000],
+                    ["*", ["-", 500, ["get", "depth"]], 1000],
                     10000
                 ],
                 "fill-extrusion-base": [
                     "*",
-                    ["-", 530, ["get", "depth"]],
+                    ["-", 500, ["get", "depth"]],
                     1000
                 ],
                 "fill-extrusion-vertical-gradient": false,
@@ -113,8 +149,8 @@
             "layout": {},
             "paint": {
                 "fill-extrusion-color": "hsl(180, 40%, 80%)",
-                "fill-extrusion-height": 542000,
-                "fill-extrusion-base": 542000,
+                "fill-extrusion-height": 512000,
+                "fill-extrusion-base": 512000,
                 "fill-extrusion-vertical-gradient": false,
                 "fill-extrusion-opacity": 0.6
             }
